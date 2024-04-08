@@ -9,5 +9,9 @@ object RickAndMortyApiClient {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    val service: RickAndMortyApiService = retrofit.create(RickAndMortyApiService::class.java)
+    //api service
+    val service: RickAndMortyApiService by lazy {
+        retrofit.create(RickAndMortyApiService::class.java)
+    }
+
 }

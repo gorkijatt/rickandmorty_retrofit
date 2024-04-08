@@ -1,6 +1,6 @@
 package com.example.kotlin1.model
 
-data class RickAndMortyCharacter(
+data class RickAndMortyCharacters(
     val info: Info,
     val results: List<Character>
 )
