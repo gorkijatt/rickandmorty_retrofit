@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import com.example.kotlin1.model.Character
 import com.example.kotlin1.model.RickAndMortyCharacters
+import com.example.kotlin1.model.RickAndMortyEpisodes
 import com.example.kotlin1.network.RickAndMortyApiClient
 import com.example.kotlin1.network.RickAndMortyApiService
 import kotlinx.coroutines.CoroutineScope
@@ -20,7 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getCharacters()
+        getEpisodes()
     }
 
     fun getCharacter(){
@@ -63,17 +64,50 @@ class MainActivity : ComponentActivity() {
             override fun onResponse(call: Call<RickAndMortyCharacters>, response: Response<RickAndMortyCharacters>) {
                 val characters = response.body()
 
-
+                //checking if it is not null
                 characters?.let { characters ->
+                    //if not null than looping
                     for (character in characters.results) {
                         // Access individual character data here
-                        Toast.makeText(applicationContext, character.name, Toast.LENGTH_SHORT).show()
+                        Log.d("RickAndMorty",character.image)
+                        Toast.makeText(applicationContext, character.image, Toast.LENGTH_SHORT).show()
                     }
                 }
 
             }
 
             override fun onFailure(call: Call<RickAndMortyCharacters>, t: Throwable) {
+                Toast.makeText(applicationContext, t.message, Toast.LENGTH_SHORT).show()
+
+            }
+
+        })
+    }
+
+    fun getEpisodes(){
+        //retrofit client
+        val service = RickAndMortyApiClient.service
+
+        //retrofit interfaces
+        val call = service.getEpisodes()
+
+        //retrieving result
+        call.enqueue(object :Callback<RickAndMortyEpisodes>{
+            override fun onResponse(call: Call<RickAndMortyEpisodes>, response: Response<RickAndMortyEpisodes>) {
+                val episodes = response.body()
+
+                //checking if it is not null
+                episodes?.let { episodes ->
+                    //if not null than looping
+                    for (episodes in episodes.results) {
+                        // Access individual character data here
+                        Log.d("RickAndMorty",episodes.name)
+                    }
+                }
+
+            }
+
+            override fun onFailure(call: Call<RickAndMortyEpisodes>, t: Throwable) {
                 Toast.makeText(applicationContext, t.message, Toast.LENGTH_SHORT).show()
 
             }
