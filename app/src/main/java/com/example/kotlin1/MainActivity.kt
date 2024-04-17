@@ -4,123 +4,157 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
-import com.example.kotlin1.model.Character
-import com.example.kotlin1.model.RickAndMortyCharacters
-import com.example.kotlin1.model.RickAndMortyEpisodes
-import com.example.kotlin1.network.RickAndMortyApiClient
-import com.example.kotlin1.network.RickAndMortyApiService
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.kotlin1.ui.theme.Kotlin1Theme
+
 
 /**
- * Compose Basic
+ * Jetpack Compose Basic Example
  */
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getEpisodes()
-    }
 
-    fun getCharacter(){
-        val service = RickAndMortyApiClient.service
+        setContent{
+            Kotlin1Theme {
 
-        //calling the api
-        val characterId = 2 // Example character ID
-        val call = service.getCharacter(characterId)
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    Column {
+                        // Text Compose
+                        Row {
+                            TextCompose(name = "Gorki !!")
+                        }
 
+                        //storing the value of the current image while it's default value is 1
+                        var currentImage by remember { mutableStateOf(1) }
 
-        //getting the character information
-        call.enqueue(object : Callback<Character> {
-            override fun onResponse(call: Call<Character>, response: Response<Character>) {
-                val character = response.body()
-                if (character != null) {
-                    val message = "Name: ${character.name}, Status: ${character.status}"
-                    Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(applicationContext, "Character data is null", Toast.LENGTH_SHORT).show()
-                }
-            }
+                        // Image Compose
+                        Row {
+                            ImageCompose(whichImage = currentImage)
+                        }
 
-            override fun onFailure(call: Call<Character>, t: Throwable) {
-                Toast.makeText(applicationContext, t.message, Toast.LENGTH_SHORT).show()
+                        // Button Compose
+                        Row {
+                            ButtonCompose(
+                                //when onclick action is done than the ui updated will done where the changes are occur
+                                //in our case ImageCompose will be called again but not other ui elements
+                                onClick = {
+                                    currentImage = if (currentImage == 1) 2 else 1
+                                },
+                            )
+                        }
 
-            }
-        })
-    }
+                        // Text Input
+                        Row {
+                            TextFieldCompose()
+                        }
 
-    fun getCharacters(){
-
-        //retrofit client
-        val service = RickAndMortyApiClient.service
-
-        //retrofit interfaces
-        val call = service.getCharacters()
-
-        //retrieving result
-        call.enqueue(object :Callback<RickAndMortyCharacters>{
-            override fun onResponse(call: Call<RickAndMortyCharacters>, response: Response<RickAndMortyCharacters>) {
-                val characters = response.body()
-
-                //checking if it is not null
-                characters?.let { characters ->
-                    //if not null than looping
-                    for (character in characters.results) {
-                        // Access individual character data here
-                        Log.d("RickAndMorty",character.image)
-                        Toast.makeText(applicationContext, character.image, Toast.LENGTH_SHORT).show()
                     }
+
+
+
                 }
-
             }
+        }
 
-            override fun onFailure(call: Call<RickAndMortyCharacters>, t: Throwable) {
-                Toast.makeText(applicationContext, t.message, Toast.LENGTH_SHORT).show()
-
-            }
-
-        })
     }
-
-    fun getEpisodes(){
-        //retrofit client
-        val service = RickAndMortyApiClient.service
-
-        //retrofit interfaces
-        val call = service.getEpisodes()
-
-        //retrieving result
-        call.enqueue(object :Callback<RickAndMortyEpisodes>{
-            override fun onResponse(call: Call<RickAndMortyEpisodes>, response: Response<RickAndMortyEpisodes>) {
-                val episodes = response.body()
-
-                //checking if it is not null
-                episodes?.let { episodes ->
-                    //if not null than looping
-                    for (episodes in episodes.results) {
-                        // Access individual character data here
-                        Log.d("RickAndMorty",episodes.name)
-                    }
-                }
-
-            }
-
-            override fun onFailure(call: Call<RickAndMortyEpisodes>, t: Throwable) {
-                Toast.makeText(applicationContext, t.message, Toast.LENGTH_SHORT).show()
-
-            }
-
-        })
-    }
-
 }
 
 
 
+@Composable
+fun ButtonCompose(onClick: () -> Unit,modifier: Modifier = Modifier){
+    Log.d("Kotlin1Activity","Button Compose Called");
+    Button(
+        onClick = onClick,
+        modifier = Modifier.width(150.dp)) {
+            Text(
+                modifier = modifier,
+                text = "Click Me",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White
+            )
+        }
+}
 
+@Composable
+fun TextCompose(name: String, modifier: Modifier = Modifier) {
+    Log.d("Kotlin1Activity","Text Compose Called");
+    Text(
+        modifier = modifier,
+        textAlign = TextAlign.Center,
+        text = "Hello $name!",
+        fontSize = 36.sp,
+        fontFamily = FontFamily.Monospace,
+        fontStyle = FontStyle.Italic,
+        fontWeight = FontWeight.Bold,
+    )
+}
+
+@Composable
+fun ImageCompose(whichImage:Int,modifier: Modifier = Modifier){
+    Log.d("Kotlin1Activity","Image Compose Called");
+    val imageRes = if (whichImage == 1) {
+        R.drawable.db
+    } else {
+        R.drawable.wonder
+    }
+
+    Image(
+        modifier = modifier.fillMaxWidth(),
+        contentScale = ContentScale.FillWidth,
+        painter = painterResource(id = imageRes),
+        contentDescription = "Dragon Ball"
+    )
+}
+
+@Composable
+fun TextFieldCompose(modifier: Modifier = Modifier) {
+    //this will remember the state of the value so when the compose is recreated the value does not lost
+    val state = remember { mutableStateOf("") }
+
+    Log.d("Kotlin1Activity","TextFieldCompose Called");
+
+    //text field
+    TextField(value = state.value, onValueChange = {
+        state.value = it
+    }, label = {
+        Text(text = "Enter Your Message")
+    })
+}
