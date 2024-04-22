@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -62,8 +64,15 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
 
-                    BoxDisplay()
-
+                    Column(
+                        verticalArrangement = Arrangement.Top,
+                        horizontalAlignment = Alignment.Start,
+                    ){
+                        UsersList(R.drawable.profile1,"Gorki","Software Developer")
+                        UsersList(R.drawable.profile2,"Jaskamal","Android Developer")
+                        UsersList(R.drawable.profile2,"Oscar","Kotlin Developer")
+                        UsersList(R.drawable.profile1,"Jaxy","PHP Developer")
+                    }
 
                 }
             }
@@ -71,7 +80,26 @@ class MainActivity : ComponentActivity() {
 
     }
 
-    @Preview(showBackground = true, widthDp = 300, heightDp = 500)
+    @Composable
+    private fun UsersList(profile:Int,name:String,occupation:String){
+
+            Row (
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start,
+                modifier = Modifier.padding(0.dp,10.dp,0.dp,0.dp).background(MaterialTheme.colorScheme.onPrimary).fillMaxWidth()
+            ){
+                Image(painter = painterResource(profile), contentDescription = "Profile Photo")
+
+                Column(
+                    modifier = Modifier.padding(5.dp,5.dp,0.dp,0.dp)
+                ) {
+                    Text(text = "Name : $name")
+                    Text(text = "Occupation : $occupation")
+                }
+            }
+
+    }
+
     @Composable
     private fun BoxDisplay() {
        Box(
