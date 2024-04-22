@@ -7,6 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,6 +20,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -31,6 +33,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
@@ -64,15 +67,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
 
-                    Column(
-                        verticalArrangement = Arrangement.Top,
-                        horizontalAlignment = Alignment.Start,
-                    ){
-                        UsersList(R.drawable.profile1,"Gorki","Software Developer")
-                        UsersList(R.drawable.profile2,"Jaskamal","Android Developer")
-                        UsersList(R.drawable.profile2,"Oscar","Kotlin Developer")
-                        UsersList(R.drawable.profile1,"Jaxy","PHP Developer")
-                    }
+                    ModifierM()
 
                 }
             }
@@ -81,12 +76,47 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
+    @Preview(showBackground = true, widthDp = 300, heightDp = 500)
+    private fun ModifierM() {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(text = "Hello", color = Color.Black, modifier = Modifier.background(MaterialTheme.colorScheme.onPrimary)
+                .size(200.dp)
+                .padding(10.dp)
+                .border(4.dp,MaterialTheme.colorScheme.error)
+                .clip(CircleShape)
+                .background(MaterialTheme.colorScheme.onPrimaryContainer)
+                .fillMaxSize()
+                )
+        }
+
+    }
+
+    @Composable
+    private fun Users(){
+        Column(
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.Start,
+        ){
+            UsersList(R.drawable.profile1,"Gorki","Software Developer")
+            UsersList(R.drawable.profile2,"Jaskamal","Android Developer")
+            UsersList(R.drawable.profile2,"Oscar","Kotlin Developer")
+            UsersList(R.drawable.profile1,"Jaxy","PHP Developer")
+        }
+    }
+
+    @Composable
     private fun UsersList(profile:Int,name:String,occupation:String){
 
             Row (
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start,
-                modifier = Modifier.padding(0.dp,10.dp,0.dp,0.dp).background(MaterialTheme.colorScheme.onPrimary).fillMaxWidth()
+                modifier = Modifier
+                    .padding(0.dp, 10.dp, 0.dp, 0.dp)
+                    .background(MaterialTheme.colorScheme.onPrimary)
+                    .fillMaxWidth()
             ){
                 Image(painter = painterResource(profile), contentDescription = "Profile Photo")
 
