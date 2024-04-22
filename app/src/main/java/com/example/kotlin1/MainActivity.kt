@@ -66,101 +66,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-
-                    ModifierM()
-
+                       PreviewItem()
                 }
             }
         }
 
-    }
-
-    @Composable
-    @Preview(showBackground = true, widthDp = 300, heightDp = 500)
-    private fun ModifierM() {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(text = "Hello", color = Color.Black, modifier = Modifier.background(MaterialTheme.colorScheme.onPrimary)
-                .size(200.dp)
-                .padding(10.dp)
-                .border(4.dp,MaterialTheme.colorScheme.error)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.onPrimaryContainer)
-                .fillMaxSize()
-                )
-        }
-
-    }
-
-    @Composable
-    private fun Users(){
-        Column(
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.Start,
-        ){
-            UsersList(R.drawable.profile1,"Gorki","Software Developer")
-            UsersList(R.drawable.profile2,"Jaskamal","Android Developer")
-            UsersList(R.drawable.profile2,"Oscar","Kotlin Developer")
-            UsersList(R.drawable.profile1,"Jaxy","PHP Developer")
-        }
-    }
-
-    @Composable
-    private fun UsersList(profile:Int,name:String,occupation:String){
-
-            Row (
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Start,
-                modifier = Modifier
-                    .padding(0.dp, 10.dp, 0.dp, 0.dp)
-                    .background(MaterialTheme.colorScheme.onPrimary)
-                    .fillMaxWidth()
-            ){
-                Image(painter = painterResource(profile), contentDescription = "Profile Photo")
-
-                Column(
-                    modifier = Modifier.padding(5.dp,5.dp,0.dp,0.dp)
-                ) {
-                    Text(text = "Name : $name")
-                    Text(text = "Occupation : $occupation")
-                }
-            }
-
-    }
-
-    @Composable
-    private fun BoxDisplay() {
-       Box(
-           contentAlignment = Alignment.Center
-       ) {
-           Image(painter = painterResource(id = R.drawable.cupid_), contentDescription = "Arrow",)
-           Image(painter = painterResource(id = R.drawable.heart_), contentDescription = "Heart")
-       }
-    }
-
-    @Composable
-    private fun ColDisplay() {
-        Column(
-            verticalArrangement = Arrangement.SpaceEvenly,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ){
-            Text(text = "A", fontSize = 24.sp)
-            Text(text = "B" , fontSize = 24.sp)
-            Text(text = "C" , fontSize = 24.sp)
-        }
-    }
-
-    @Composable
-    private fun RowDisplay(){
-        Row(
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
-        ){
-            Text(text = "A", fontSize = 24.sp)
-            Text(text = "B" , fontSize = 24.sp)
-            Text(text = "C" , fontSize = 24.sp)
-        }
     }
 }
